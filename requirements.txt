@@ -2,4 +2,5 @@ GitPython
 matplotlib
 numpy
 pandas
+pylorentz
 scipy

@@ -6065,7 +6065,7 @@ class Source(BeamLineElement):
             print("     ----> X:", X)
 
         eps= (X * (1 + (0.5 / (1 - (X**2) ) ) ) ) + \
-                 (0.25 * mth.log((1 + X) / (1 - X))) - (t_laser/t_0)
+                 (0.25 * np.log((1 + X) / (1 - X))) - (t_laser/t_0)
 
         if self.getDebug():
             print(" <---- eps:", eps)
