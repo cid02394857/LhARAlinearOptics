@@ -25,12 +25,12 @@ git checkout claude/busy-euler-mjur5i     # 本次云端会话的全部工作都
 | 5 | 没装 LaTeX 时，`decayCHAIN.py`、`ExpSourceTst.py`、`ExpSourceTst_rms_KE.py` 作图报 `RuntimeError` | 这三个测试脚本 | 装了 LaTeX 才启用 `usetex`，否则用 matplotlib 自带的公式渲染 |
 | 6 | `OctupoleTst.py` 一直失败：测试用的是旧版 `vStrt` 格式；Octupole 类没有设置 `Strt2End`/`Rot2LbEnd`，放不进束线；预期值本身前后矛盾 | `02-Tests/OctupoleTst.py`、`BeamLineElement.Octupole.__init__` | 按 Drift 的写法补齐两行；测试改为先建 BeamLine、登记参考粒子，预期值按（线性近似下等价于漂移段的）传输矩阵重新计算 |
 | 7 | NumPy 2 下，`plotBeam.py`/`plotextrapolatedBeam.py` 输出 CSV 的 `Twiss` 列写成了 `np.float64(...)`，无法解析 | `01-Code/Beam.py` `setTwiss` | Twiss 值转成 Python float |
-| 8 | `03-Scripts` 和用户目录里的 9 个脚本运行成功时退出码是 1（用法错误时反而是 0），批量运行没法判断成败 | 各脚本最后一行 | 改成 `sys.exit(0)` |
+| 8 | `03-Scripts`、用户目录里的 9 个脚本和 `02-Tests/decayCHAIN-vis.py` 运行成功时退出码是 1（用法错误时反而是 0），批量运行没法判断成败 | 各脚本最后一行 | 改成 `sys.exit(0)` |
 | 9 | 文档小错：README 里的安装指南路径写错；用户目录 README 写的是 `startup.bash`，应为 `user_startup.bash` | `README.md`、`31-UserDirectory/README.md` | 改正 |
 
 ## 新增内容
 
-- `02-Tests/runAllTests.bash`：一条命令跑完全部标准测试（按依赖关系排好顺序，约 15 分钟），打印 PASS/FAIL 汇总，日志在 `99-Scratch/TestLogs/`。
+- `02-Tests/runAllTests.bash`：一条命令跑完全部标准测试（按依赖关系排好顺序，约 20 分钟），打印 PASS/FAIL 汇总，日志在 `99-Scratch/TestLogs/`。
 - `31-UserDirectory/03-Scripts/scanParameter.py`：参数扫描示例，改参数文件里的一个参数 → 模拟 → 算包络 → 汇总末端束斑和粒子数（CSV + PDF）。
 - `.gitignore` 加了 `LaTex.tex`（`LaTexTst.py` 按默认路径在根目录写出的文件）。
 
@@ -45,7 +45,7 @@ bash 02-Tests/runAllTests.bash DriftTst FocusQuadTst   # 只跑指定的测试
 ## 待办事项
 
 - [x] 写中文代码解读与科研使用指南 `00-Documentation/CodeGuide-CN.md`
-- [ ] 用 `02-Tests/runAllTests.bash` 做最终验收（结果见会话日志）
+- [x] 用 `02-Tests/runAllTests.bash` 做最终验收：61/61 通过（见会话日志）
 - [ ] 用户在本地配置环境、跑通 `runAllTests.bash`（见 `CodeGuide-CN.md` 第 5.1、5.6 节）
 
 ### 已发现但暂未修改的小问题（需要先确认原作者的本意）
@@ -70,3 +70,5 @@ bash 02-Tests/runAllTests.bash DriftTst FocusQuadTst   # 只跑指定的测试
 - 第二轮全量测试（修复 1–6 之后）：`02-Tests` 第一阶段 55/55、第二阶段（读取前面生成的数据）5/5 全部通过。
 - 第三轮：`03-Scripts` 的 6 个脚本、从 BDSIM 文件读入做束流输运、用户目录（按 README 拷贝后运行）的 4 个脚本，共 12 项全部通过。
 - 测试环境：Python 3.13，numpy 2.5.3、pandas 3.0.5、scipy 1.18.1、matplotlib 3.11.2、GitPython 3.2.1、pylorentz；没有 LaTeX。
+- 写了中文指南 `00-Documentation/CodeGuide-CN.md`；准直误差（Shift/Tilt 行）和 `scanParameter.py` 都实测有效。
+- 最终验收：`bash 02-Tests/runAllTests.bash` 共 61 项（`02-Tests` 里除 `cProfileStats` 外的全部脚本，`decayCHAIN-vis` 带参数运行）全部通过，顺序执行约 18 分钟。

@@ -45,7 +45,7 @@ python 02-Tests/BeamLineTst.py
 ## 常用命令
 
 ```bash
-bash 02-Tests/runAllTests.bash                    # 全部测试（约 15 分钟），日志在 99-Scratch/TestLogs/
+bash 02-Tests/runAllTests.bash                    # 全部测试（约 20 分钟），日志在 99-Scratch/TestLogs/
 python 03-Scripts/runBeamSim.py -b 11-Parameters/LhARABeamLine-Params-LsrDrvn-Gabor.csv -o 99-Scratch/LhARA.dat -n 1000
 python 03-Scripts/plotBeam.py -i 99-Scratch/LhARA.dat -n 1000 -o 99-Scratch/LhARA-beam.csv
 python 31-UserDirectory/03-Scripts/scanParameter.py -b 11-Parameters/LhARA-Stage1-BeamDelivery.csv \

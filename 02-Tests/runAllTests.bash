@@ -9,7 +9,7 @@
 # Each test is judged to pass if it exits with status 0.  The output of
 # each test is written to 99-Scratch/TestLogs/<test>.log.  Plots are made
 # with the non-interactive "Agg" backend so that no windows are opened.
-# A complete run takes about 15 minutes.
+# A complete run takes about 20 minutes.
 
 if [ -z "${LhARAOpticsPATH}" ]; then
   echo "ERROR: environment not set up; execute \"source startup.bash\" first."

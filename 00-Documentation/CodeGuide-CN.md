@@ -404,7 +404,7 @@ $LhARAOpticsPATH/03-Scripts/runBeamSim.py -b 11-Parameters/LIONBeamLine-Params-G
 ### 5.6 跑全部测试
 
 ```bash
-bash 02-Tests/runAllTests.bash                 # 约 15 分钟；日志在 99-Scratch/TestLogs/
+bash 02-Tests/runAllTests.bash                 # 约 20 分钟；日志在 99-Scratch/TestLogs/
 bash 02-Tests/runAllTests.bash DriftTst        # 只跑指定的测试
 ```
 
