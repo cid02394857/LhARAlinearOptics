@@ -44,8 +44,22 @@ bash 02-Tests/runAllTests.bash DriftTst FocusQuadTst   # 只跑指定的测试
 
 ## 待办事项
 
-- [ ] 写中文代码解读与科研使用指南 `00-Documentation/CodeGuide-CN.md`
-- [ ] 用 `02-Tests/runAllTests.bash` 做最终验收
+- [x] 写中文代码解读与科研使用指南 `00-Documentation/CodeGuide-CN.md`
+- [ ] 用 `02-Tests/runAllTests.bash` 做最终验收（结果见会话日志）
+- [ ] 用户在本地配置环境、跑通 `runAllTests.bash`（见 `CodeGuide-CN.md` 第 5.1、5.6 节）
+
+### 已发现但暂未修改的小问题（需要先确认原作者的本意）
+
+- `03-Scripts/2BDSIM.py`：解析了 `-l <start location>`，但之后没有使用（变量 `iLoc` 未被引用），导出位置固定由 `writeParticleBDSIM(..., 1, True)` 决定。
+- 多个脚本的 getopt 长选项定义不完整（如 `"bfile"` 少了 `=`），`--bfile x` 这种写法不起作用；短选项正常。
+- `runBeamSim.py` 的 `-z` 用 `bool(arg)` 解析，任何非空字符串（包括 `False`）都当作 True。
+- TN 文档（`LhARA-TN-2024-07`）有几处已经过时：说代码“只处理质子”（现在支持 ¹²C⁶⁺、π、μ）；说 `plotextrapolatedBeam.py` 输出 `extrapolatedBeamProgress.pdf`（实际和 `plotBeam.py` 一样写 `BeamProgressionPlot.pdf`）。
+
+### 科研方面的下一步（详见 `CodeGuide-CN.md` 第 6 节）
+
+1. 复现：跑 LhARA 主配置，和 `41-ReferencePlots/` 对比；比较 `plotBeam` 与 `plotextrapolatedBeam` 的包络。
+2. 终端站束流输运优化（原作者 2026-09 的当前重点）：用 `scanParameter.py` 扫末端聚焦四极铁，改进 `EnvelopeOptimisation.py` 的代价函数和优化算法。
+3. 根据导师的要求，从指南 6.2 节的方向 B–G 中选题。
 
 ## 会话日志
 

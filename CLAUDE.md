@@ -42,9 +42,22 @@ python 02-Tests/BeamLineTst.py
 - 依赖：GitPython、matplotlib、numpy、pandas、pylorentz、scipy（2026-10 已验证可用的最新版本：numpy 2.5.3、pandas 3.0.5、scipy 1.18.1、matplotlib 3.11.2）。
 - LaTeX 不是必需的：没装 LaTeX 时，作图会自动退回 matplotlib 自带的公式渲染。
 
+## 常用命令
+
+```bash
+bash 02-Tests/runAllTests.bash                    # 全部测试（约 15 分钟），日志在 99-Scratch/TestLogs/
+python 03-Scripts/runBeamSim.py -b 11-Parameters/LhARABeamLine-Params-LsrDrvn-Gabor.csv -o 99-Scratch/LhARA.dat -n 1000
+python 03-Scripts/plotBeam.py -i 99-Scratch/LhARA.dat -n 1000 -o 99-Scratch/LhARA-beam.csv
+python 31-UserDirectory/03-Scripts/scanParameter.py -b 11-Parameters/LhARA-Stage1-BeamDelivery.csv \
+       -e Fquad -p kq -v 18,20,22,24 -i 12-Data4Tests/BDSIM-Data4Tests.dat -z
+```
+
+- `03-Scripts` 里的脚本成功时退出码为 0，失败为 1。
+- 当前科研重点：LhARA Stage 1 低能终端站的束流输运优化（`LhARA-Stage1-BeamDelivery.csv`、`31-UserDirectory/01-Code/EnvelopeOptimisation.py`）。
+
 ## 修改代码时的约定
 
 - 跟随现有代码风格：类方法 `getX` / `setX`、调试输出放在 `if self.getDebug():` 块里、注释用 `#..` 开头、续行用 `\`。
-- 二进制数据格式（`BeamIO`）是带版本号的（目前是 V8），读取时要兼容旧版本；改格式时要同时改读写两端，并更新 `12-Data4Tests` 和 `BeamIOTst-rd.py`。
+- 二进制数据格式（`BeamIO`）带版本号，读取时要兼容旧版本（`12-Data4Tests` 里有 V1–V8 的样例）；改格式时要同时改读写两端，并更新 `12-Data4Tests` 和 `BeamIOTst-rd.py`。
 - 改完代码后，跑一遍完整测试（见 `PROGRESS.md` 里的“如何跑全部测试”）。
 - 提交信息用英文，简洁说明改了什么、为什么改。
