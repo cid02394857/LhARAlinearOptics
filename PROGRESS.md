@@ -46,7 +46,8 @@ bash 02-Tests/runAllTests.bash DriftTst FocusQuadTst   # 只跑指定的测试
 
 - [x] 写中文代码解读与科研使用指南 `00-Documentation/CodeGuide-CN.md`
 - [x] 用 `02-Tests/runAllTests.bash` 做最终验收：61/61 通过（见会话日志）
-- [ ] 用户在本地配置环境、跑通 `runAllTests.bash`（见 `CodeGuide-CN.md` 第 5.1、5.6 节）
+- [ ] 用户在本地 VS Code 里配置环境，先用**原始**主配置 `LhARABeamLine-Params-LsrDrvn-Gabor.csv` 跑一次基准（`CodeGuide-CN.md` 第 5.1、5.2 节），再跑 `runAllTests.bash`
+- [ ] 基准跑通后：复制一份主配置作为自己的参数文件；先和导师确认要用的激光参数（主配置里没写激光参数，用的是代码默认值：10 J、40 fs、焦斑半径 1.5 µm 等）
 
 ### 已发现但暂未修改的小问题（需要先确认原作者的本意）
 
@@ -72,3 +73,4 @@ bash 02-Tests/runAllTests.bash DriftTst FocusQuadTst   # 只跑指定的测试
 - 测试环境：Python 3.13，numpy 2.5.3、pandas 3.0.5、scipy 1.18.1、matplotlib 3.11.2、GitPython 3.2.1、pylorentz；没有 LaTeX。
 - 写了中文指南 `00-Documentation/CodeGuide-CN.md`；准直误差（Shift/Tilt 行）和 `scanParameter.py` 都实测有效。
 - 最终验收：`bash 02-Tests/runAllTests.bash` 共 61 项（`02-Tests` 里除 `cProfileStats` 外的全部脚本，`decayCHAIN-vis` 带参数运行）全部通过，顺序执行约 18 分钟。
+- 之后讨论了本地运行：建议用户在 VS Code 终端里自己跑（Windows 用 WSL），先跑原始主配置作为基准；对话上下文已很长，建议开新对话继续。

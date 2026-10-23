@@ -320,7 +320,14 @@ source venv/bin/activate
 source startup.bash        # 必须在 bash 里、在仓库根目录执行
 ```
 
-macOS 默认的 shell 是 zsh，先输入 `bash` 切换。Windows 推荐用 WSL；如果用 Git Bash，先执行 `unset HOMEPATH`（见第 7 节）。
+在 VS Code 里的具体做法：
+
+- **macOS**：建议 Python 3.11 或更新（本次验证用的是 3.13），没有的话从 python.org 安装。VS Code 的终端默认是 zsh：按 Cmd+Shift+P，选 “Terminal: Select Default Profile” → bash，或者每次在终端里先输入 `bash`。提示符前面有 `(base)` 的话，先执行 `conda deactivate`。如果 `source startup.bash` 提示 `realpath: command not found`（macOS 12 及更早的系统），先执行 `brew install coreutils`。
+- **Windows**：用 WSL。在管理员 PowerShell 里执行 `wsl --install`，重启后打开 Ubuntu，执行 `sudo apt update && sudo apt install -y python3 python3-venv python3-pip git`。在 VS Code 里安装 “WSL” 扩展，按 F1 选 “WSL: Connect to WSL”，之后的命令都在这个 WSL 终端里执行。代码放在 WSL 自己的目录（比如 `~/`）下，不要放在 `/mnt/c/...`，否则会慢很多。不推荐 Git Bash：它自带系统变量 `HOMEPATH`，`startup.bash` 会拒绝运行（见第 7 节）。
+- 建议安装 VS Code 扩展 “Python”（微软官方）和一个 PDF 查看扩展（例如 “vscode-pdf”），可以直接在 VS Code 里看输出的图。在 WSL 里也可以用 `explorer.exe 99-Scratch` 打开输出文件夹。
+- 创建 venv 后，VS Code 如果询问是否为这个工作区选用新环境，选 Yes。
+- **在终端里运行命令，不要点编辑器右上角的“运行”按钮**：代码依赖 `startup.bash` 设置的环境变量。
+- 检查安装：`python -c "import numpy, scipy, pandas, matplotlib, git, pylorentz; print('OK')"` 应输出 `OK`；`python 02-Tests/BeamLineTst.py` 的最后一行应是 `========  BeamLine: tests complete  ========`。
 
 ### 5.2 流程 A：从激光源开始模拟整条 Stage 1 束线
 
@@ -347,6 +354,8 @@ python 03-Scripts/2BDSIM.py -i 99-Scratch/LhARA.dat -o 99-Scratch/LhARA-bdsim.da
 ```
 
 要在不同参数之间比较 `plotBeam.py` 的图，每次运行后把 `BeamProgressionPlot.pdf` 改个名字保存下来，否则会被覆盖。
+
+第一次建议先用 `-n 1000` 跑通，再用 `-n 10000`（约 40 秒）。主配置的传输效率很低（实测 1000 个粒子只有 17 个到达末端），想看末端的结果要用更多事件。`readBeamSim.py` 生成的两个图可以和 `41-ReferencePlots/2024-02-23-LhARA-Lsrdrvn-Gabor-*.pdf`（同一配置的参考图）对比。参考图是 2024 年 2 月的代码生成的，加上随机抽样的涨落，细节会有差别，但整体特征应该相近；差别很大的话，记下来问导师。
 
 ### 5.3 流程 B：束流输运段（从文件读入粒子）
 
