@@ -4,7 +4,7 @@ Linear optics code for LhARA -- Tag1
 The code in this repository provides linear beam-line optics code and implemetations of the DRACO, LION< and LhARA Stage 1 beamlines.  
 
 ## To set up and run:
-A guide to setting up and running the package is given in 00-Documentation/00-Setup-n-run/Setup-n-run.pdf.
+A guide to setting up and running the package is given in 00-Documentation/00-Setup-n-run/LhARA_Beamline-01.pdf.
 
 Execute "startup.bash" from this directory (i.e. run the bash command "source startup.bash").  This will:
   * Set up "LhARAOpticsPATH"; and

@@ -3706,6 +3706,9 @@ class Octupole(BeamLineElement):
 
         self.setLength(_Length)
 
+        self.setStrt2End(np.array([0., 0., self.getLength()]))
+        self.setRot2LbEnd(self.getRot2LbStrt())
+
         self.setTransferMatrix()
 
         if self.__Debug:

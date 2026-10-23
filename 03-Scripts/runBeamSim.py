@@ -124,4 +124,4 @@ if __name__ == "__main__":
     cProfile.run('main(sys.argv[1:])', '99-Scratch/restats')
     """
 
-sys.exit(1)
+sys.exit(0)

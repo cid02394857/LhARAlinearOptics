@@ -7,6 +7,7 @@ Test script for handling unstable particles
 """
 
 import os
+import shutil
 import sys
 import numpy as np
 
@@ -25,7 +26,8 @@ print("========  Decay-chain handling: tests start  ========")
 print("decayCHAINTest:", "initialising:")
 
 print("     ----> MatPlotLib options:")
-mpl.rc('text', usetex=True)
+#.. Use LaTeX for plot text only if it is installed:
+mpl.rc('text', usetex=(shutil.which('latex') is not None))
 mpl.rcParams['text.latex.preamble']="\\usepackage{bm}"
 mpl.rcParams["figure.autolayout"]=True
 mpl.rcParams['figure.constrained_layout.use'] = True

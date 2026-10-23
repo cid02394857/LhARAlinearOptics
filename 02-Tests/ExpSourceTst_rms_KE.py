@@ -10,6 +10,7 @@ Test script for "Source" class
 """
 
 import os
+import shutil
 import math  as mth
 import numpy as np
 import matplotlib as mpl
@@ -22,7 +23,8 @@ import BeamLine          as BL
 import Particle          as Prtcl
 import PhysicalConstants as PhysCnst
 
-mpl.rc('text', usetex=True)
+#.. Use LaTeX for plot text only if it is installed:
+mpl.rc('text', usetex=(shutil.which('latex') is not None))
 mpl.rcParams['text.latex.preamble']="\\usepackage{bm}"
 mpl.rcParams["figure.autolayout"]=True
 mpl.rcParams['figure.constrained_layout.use'] = True

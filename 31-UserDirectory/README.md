@@ -19,7 +19,7 @@ Once you have done all that:
 * Copy this directory to a scratch area, for example /home/user/scratch: "cp -r 31-UserDirectory /home/user/scratch".
 * Change to that directory: "cd /home/user/scratch".
 * Assuming that you had checked out the main repo to /home/user/Git/LhARAlinearOptics, source the startup.bash file as follows:
-  "source startup.bash -p /home/user/Git/LhARAlinearOptics"
+  "source user_startup.bash -p /home/user/Git/LhARAlinearOptics"
 
 You should now hopefully be ready to start using the scripts in the UserDirectory.
 As an example:

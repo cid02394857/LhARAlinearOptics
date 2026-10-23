@@ -533,18 +533,18 @@ class Beam:
                                        self.getemittance()[iAddr][1]
 
             if self.getemittance()[iAddr][0] > 0.:
-                ax = -emX[0,1]
-                bx =  emX[0,0]
-                gx =  emX[1,1]
+                ax = float(-emX[0,1])
+                bx =  float(emX[0,0])
+                gx =  float(emX[1,1])
             else:
                 ax = None
                 bx = None
                 gx = None
 
             if self.getemittance()[iAddr][1] > 0.:
-                ay = -emY[0,1]
-                by =  emY[0,0]
-                gy =  emY[1,1]
+                ay = float(-emY[0,1])
+                by =  float(emY[0,0])
+                gy =  float(emY[1,1])
             else:
                 ay = None
                 by = None

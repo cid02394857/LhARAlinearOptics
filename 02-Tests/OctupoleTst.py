@@ -9,8 +9,14 @@ Octupole.py -- set "relative" path to code
 """
 
 import numpy as np
+import os
 
 import BeamLineElement as BLE
+import BeamLine        as BL
+
+HOMEPATH = os.getenv('HOMEPATH')
+filename = os.path.join(HOMEPATH, \
+                        '11-Parameters/Dummy4Tests.csv')
 
 ##! Start:
 print("========  Octupole: tests start  ========")
@@ -28,16 +34,22 @@ try:
 except:
     print('      ----> Correctly trapped no argument exception.')
 rStrt = np.array([0.,0.,0.])
-vStrt = np.array([0.,0.])
+vStrt = np.array([[np.pi/2.,np.pi/2.],[0.,0.]])
 drStrt = np.array([0.,0.,0.])
-dvStrt = np.array([0.,0.])
+dvStrt = np.array([0.,0.,0.])
 try:
     Oct = BLE.Octupole("Octopole", rStrt, vStrt, drStrt, dvStrt)
 except:
     print('      ----> Correctly trapped no octupole length exception.')
 
+#--------> Clean instances and restart (facility needed for transport):
+BLE.BeamLineElement.cleaninstances()
+BLI  = BL.BeamLine(filename)
+
 #.. Create valid instance:
 Oct = BLE.Octupole("Octopole", rStrt, vStrt, drStrt, dvStrt, 1.5)
+iRefPrtcl   = BL.BeamLine.getcurrentReferenceParticle()
+refPrtclSet = iRefPrtcl.setReferenceParticle(Oct)
     
 #.. __repr__
 print("    __repr__:")
@@ -67,7 +79,7 @@ BLE.Octupole.setDebug(False)
 OctupoleTest += 1
 print()
 print("OctupoleTest:", OctupoleTest, " test transport through octupole.")
-R      = np.array([0.5, 0.1, -0.3, -0.2, 0., 0.])
+R      = np.array([0.005, 0.001, -0.003, -0.002, 0., 0.])
 Rprime = Oct.Transport(R)
 print("     ----> Input phase-space vector:", R)
 print("     ----> Relevant portions of transfer matrix:")
@@ -88,7 +100,8 @@ print("         ", Oct.getTransferMatrix()[3,0], \
                    Oct.getTransferMatrix()[3,2], \
                    Oct.getTransferMatrix()[3,3])
 print("     ----> Transported phase-space vector:", Rprime)
-RprimeTest = np.array([ 1. ,  0.1, -0.45, -0.2 ,  0. ,  0.  ])
+#.. Linear optics: octupole acts as a drift of length 1.5 m:
+RprimeTest = np.array([ 0.0065,  0.001, -0.006, -0.002,  0. ,  0.  ])
 Diff       = np.subtract(Rprime, RprimeTest)
 Norm       = np.linalg.norm(Diff)
 print("     ----> Difference Rprime - RprimeTest:", Diff)
