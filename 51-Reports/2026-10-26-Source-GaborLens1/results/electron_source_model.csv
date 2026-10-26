@@ -1,0 +1,24 @@
+Quantity,Value,Unit,Note
+Intensity (Strehl weighted),2.122065907891938e+21,W/cm2,
+Normalised vector potential a0,31.50647574373223,,
+Transverse acceleration length y0,4.011529083215908,um,
+Effective spot radius r0/(2 ln 2),1.0820212806667227,um,
+Small-spot correction pt/pt0,0.6831563856935957,,Dover et al. 2020
+"Te, ponderomotive (no correction)",15.596884459239112,MeV,
+"Te, with small-spot correction",10.499529978124478,MeV,code: 10.4995
+"Conversion efficiency, raw scaling",11.864526132387022,,1.2e-15 I^0.75
+Conversion efficiency used,0.5,,capped at 0.5
+Laser energy in focal spot,6.0,J,E_laser x Strehl
+Number of hot electrons Ne,1783368137849.943,,eta E / Te
+Sheath radius B = r0 + d tan(theta_e),3.831538290774993,um,
+Sheath area,4.6120734262078156e-11,m2,
+Hot-electron density ne0,3.22451273177283e+27,m-3,
+ne0 / critical density,1.851083414081664,,n_c = 1.742e+27 m-3
+Sheath field scale sqrt(ne0 Te/eps0),24751288303778.69,V/m,
+Debye length,0.4242013525977618,um,
+Ion-acoustic speed c_s,0.10578413297684468,c,
+Ion plasma frequency x t_laser,2.9903992571752545,,
+Ballistic time t0,28.42602207949715,fs,
+"Kmax, code model",33.870599492219014,MeV,code: 33.8706
+"Kmax, Mora (t_acc = t_laser)",23.94096254272377,MeV,PRL 90 185002
+"Kmax, Mora (t_acc = 1.3 t_laser)",34.62640802274837,MeV,

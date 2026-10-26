@@ -56,6 +56,11 @@ bash 02-Tests/runAllTests.bash DriftTst FocusQuadTst   # 只跑指定的测试
 - `runBeamSim.py` 的 `-z` 用 `bool(arg)` 解析，任何非空字符串（包括 `False`）都当作 True。
 - TN 文档（`LhARA-TN-2024-07`）有几处已经过时：说代码“只处理质子”（现在支持 ¹²C⁶⁺、π、μ）；说 `plotextrapolatedBeam.py` 输出 `extrapolatedBeamProgress.pdf`（实际和 `plotBeam.py` 一样写 `BeamProgressionPlot.pdf`）。
 
+- **（2026-10-26 报告中发现，影响结果解读）** 整条束线 91% 的“损失”来自 `BeamLineElement.Transport` 里的纵向截断 `abs(_R[4]) > 5.`（|z| > 5 m），不是物理孔径；全束线传输率和末端能谱主要由它决定。需要和导师确认这个截断的物理含义。
+- **（同上）** 偏转段入口的 `LhARA:1:Arc:RPLCswitch:1` 丢掉了 3.5% 的生成粒子（13–17 MeV），原因未查明。
+- **（同上）** 线性输运里 x′ = pₓ/p₀，漂移段用参考动量矩阵，Gabor 透镜用按粒子动量计算的物理斜率矩阵，结果是远离 15 MeV 的粒子横向位置被缩放了 p/p₀（比值类的量不受影响）。
+- **（同上）** 源模型：能量按全角度能谱抽样，再把方向强制限制在 `rpmax` 内（主配置 5 mrad，只相当于 TNSA 锥内约 0.08% 的质子），所以锥内能谱偏软；能量转换效率定标在 2×10²¹ W/cm² 下已超出适用范围（被截断为 0.5）；质子源尺寸取激光焦斑 r0，而电子鞘层半径是 3.8 µm。
+
 ### 科研方面的下一步（详见 `CodeGuide-CN.md` 第 6 节）
 
 1. 复现：跑 LhARA 主配置，和 `41-ReferencePlots/` 对比；比较 `plotBeam` 与 `plotextrapolatedBeam` 的包络。
@@ -74,3 +79,10 @@ bash 02-Tests/runAllTests.bash DriftTst FocusQuadTst   # 只跑指定的测试
 - 写了中文指南 `00-Documentation/CodeGuide-CN.md`；准直误差（Shift/Tilt 行）和 `scanParameter.py` 都实测有效。
 - 最终验收：`bash 02-Tests/runAllTests.bash` 共 61 项（`02-Tests` 里除 `cProfileStats` 外的全部脚本，`decayCHAIN-vis` 带参数运行）全部通过，顺序执行约 18 分钟。
 - 之后讨论了本地运行：建议用户在 VS Code 终端里自己跑（Windows 用 WSL），先跑原始主配置作为基准；对话上下文已很长，建议开新对话继续。
+
+### 2026-10-26 云端会话
+- 用户在本地跑通前，先请云端跑一次完整模拟并出报告。用主配置 `LhARABeamLine-Params-LsrDrvn-Gabor.csv` 跑了 5 万事件（种子 20261026），报告在 `51-Reports/2026-10-26-Source-GaborLens1/`：`report-CN.md`、`report-EN.md`，分析脚本 `sourceGL1Analysis.py`，图在 `figures/`，结果表在 `results/`。
+- 报告重点：激光质子源（TNSA，Te = 10.5 MeV，Kmax = 33.9 MeV）、源处电子的行为与“能否用电子诊断质子源”（结论：部分可行）、第一个 Gabor 透镜（15 MeV 焦距 0.92 m，约 11.3 MeV 出射平行，强色差使投影发射度增长约 480 倍）。
+- 新发现的代码问题见上面“已发现但暂未修改的小问题”。
+- 数据文件 `99-Scratch/LhARA-LsrDrvn-Gabor.dat`（84 MB）没有提交，用报告第 8 节的命令可以完全重新生成。
+

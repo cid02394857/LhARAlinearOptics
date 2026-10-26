@@ -23,6 +23,7 @@
 | `11-Parameters/` | 束线参数 CSV（同名 xlsx 是编辑用源文件） |
 | `12-Data4Tests/` | 测试用数据文件（二进制 BeamIO 格式，外加 BDSIM 文本格式） |
 | `31-UserDirectory/` | 用户分析框架示例，包括四极铁优化 `01-Code/EnvelopeOptimisation.py` |
+| `51-Reports/` | 模拟报告，每个报告一个目录（中英文报告、分析脚本、图、结果表） |
 | `91-Notes/` | 原作者的开发日志 |
 | `99-Scratch/` | 输出目录（已 gitignore，由 `startup.bash` 自动创建） |
 

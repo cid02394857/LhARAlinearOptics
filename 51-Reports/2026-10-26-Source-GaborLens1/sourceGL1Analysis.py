@@ -367,14 +367,21 @@ def analyse(datafile, outdir):
     for iN, Name in enumerate(Names):
         Ok  = ~np.isnan(TS[:, iN, 0])
         BP  = beamParameters(TS[Ok, iN, :])
+        #.. Transverse positions rescaled by p0/p (see report):
+        TSc = TS[Ok, iN, :].copy()
+        TSc[:, 0] *= p0/pK[Ok]
+        TSc[:, 2] *= p0/pK[Ok]
+        BPc = beamParameters(TSc)
         Rows.append([Name, sOf[Name], int(Ok.sum()), Ok.sum()/N0, \
                      BP["sigx"]*1.E3, BP["sigy"]*1.E3, \
                      BP["sigxp"]*1.E3, BP["sigyp"]*1.E3, \
                      BP["epsx"]*1.E6, BP["epsy"]*1.E6, \
-                     BP["alphax"], BP["betax"], BP["alphay"], BP["betay"]])
+                     BP["alphax"], BP["betax"], BP["alphay"], BP["betay"], \
+                     BPc["sigx"]*1.E3, BPc["sigy"]*1.E3, BPc["epsx"]*1.E6])
     Header = ["Location", "s_m", "N", "Transmission", "sigx_mm", "sigy_mm", \
               "sigxp_mrad", "sigyp_mrad", "epsx_mm_mrad", "epsy_mm_mrad", \
-              "alphax", "betax_m", "alphay", "betay_m"]
+              "alphax", "betax_m", "alphay", "betay_m", \
+              "sigx_corr_mm", "sigy_corr_mm", "epsx_corr_mm_mrad"]
     with open(os.path.join(resdir, "beam_parameters_capture.csv"), "w", \
               newline="") as File:
         W = csv.writer(File)
@@ -423,6 +430,10 @@ def analyse(datafile, outdir):
                          (axs[1], 1, r"$\sigma_{x'}$ (mrad)")):
         ax.plot(sCurve, rms(TSCurve, col, AllSel)*1.E3, "k-", lw=2.2, \
                 label="All protons")
+        if col == 0:
+            ax.plot(sCurve, np.array([np.std(T[:, 0]*p0/pK) \
+                    for T in TSCurve])*1.E3, "k--", lw=1.5, \
+                    label=r"All protons, x rescaled by $p_0/p$")
         for Kb in BANDS:
             Sel = np.abs(K - Kb) < 1.
             if Sel.sum() > 50:
@@ -464,6 +475,16 @@ def analyse(datafile, outdir):
     fig.savefig(os.path.join(figdir, "fig5_trace_space_GL1.png"), dpi=150)
     plt.close(fig)
 
+    #.. Emittance in narrow energy bands (chromatic emittance growth):
+    BandEps = []
+    for Kb in BANDS:
+        Sel = np.abs(K - Kb) < 0.25
+        if Sel.sum() > 20:
+            BandEps.append([Kb, int(Sel.sum()), \
+                beamParameters(TS[Sel, iEnt, :])["epsx"]*1.E6, \
+                beamParameters(TS[Sel, iExt, :])["epsx"]*1.E6])
+    Summary["band_emittance_GL1_entrance_exit_mm_mrad"] = BandEps
+
     #.. ----> Chromatic focusing of Gabor lens 1:
     LGL1 = iGL1.getLength()
     Mfull = lensMatrices(iGL1, [LGL1], deltas)[0]
@@ -474,9 +495,11 @@ def analyse(datafile, outdir):
     sqrtk = np.arccos(np.clip(M11, -1., 1.)) / LGL1
     focal = -1. / M21
     i15   = np.argmin(np.abs(Kd - 15.))
-    Zero  = np.where(np.diff(np.sign(Ratio)) != 0)[0]
-    Kpar  = [float(np.interp(0., [Ratio[z+1], Ratio[z]], [Kd[z+1], Kd[z]])) \
-             for z in Zero]
+    def zeros(F):
+        return [float(Kd[z] - F[z]*(Kd[z+1]-Kd[z])/(F[z+1]-F[z])) \
+                for z in np.where(np.diff(np.sign(F)) != 0)[0]]
+    Kpar  = zeros(M21*d + M22)      #.. x' = 0 at exit: parallel beam
+    Kimg  = zeros(M11*d + M12)      #.. x  = 0 at exit: imaged onto axis
     Summary["GL1"] = { \
         "Length_m": LGL1, "Strength_internal": iGL1.getStrength(), \
         "ElectronDensity_m-3": iGL1.getElectronDensity(), \
@@ -486,6 +509,7 @@ def analyse(datafile, outdir):
         "focal_length_15MeV_m": float(focal[i15]), \
         "xp_over_x_exit_15MeV_per_m": float(Ratio[i15]), \
         "K_parallel_after_GL1_MeV": Kpar, \
+        "K_imaged_on_axis_at_exit_MeV": Kimg, \
         "M_15MeV": Mfull[i15, 0:2, 0:2].tolist(), \
         "max_xy_coupling": float(np.abs(Mfull[:, 0:2, 2:4]).max())}
     with open(os.path.join(resdir, "GL1_chromatic.csv"), "w", \
@@ -517,7 +541,9 @@ def analyse(datafile, outdir):
                 label=r"Phase advance $\sqrt{k}L$ (rad)")
     axs[1].axvline(15., color="grey", ls="--", lw=1)
     axs[1].set_xlabel("Kinetic energy K (MeV)")
-    axs[1].set_title("Gabor lens 1 focusing versus energy", fontsize=10)
+    axs[1].set_title("Gabor lens 1 focusing versus energy (f diverges " \
+                     r"where $\sqrt{k}L = \pi$)", fontsize=10)
+    axs[1].set_ylim(-1., 4.)
     axs[1].legend(fontsize=8)
     axs[1].grid(alpha=0.3)
     fig.savefig(os.path.join(figdir, "fig6_chromatic_GL1.png"), dpi=150)

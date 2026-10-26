@@ -1,0 +1,20 @@
+Parameter,Value,Unit,Origin
+Wavelength,0.8,um,default
+Power,250000000000000.0,W,default (10 J / 40 fs)
+Strehl ratio,0.6,,default
+Focal spot radius r0,1.5,um,default
+Pulse duration,40.0,fs,default
+Target thickness,5.0,um,default
+Electron divergence half angle,25.0,deg,default
+Intensity,2.122065907891938e+21,W/cm2,derived
+a0,31.50647574373223,,derived
+Hot electron temperature Te,10.499529977000082,MeV,derived
+K_infinity,94.83563524186695,MeV,derived
+Ballistic time t0,28.42602207949715,fs,derived
+t_laser/t0,1.4071613639127798,,derived
+X = sqrt(Kmax/K_infinity),0.597620742755839,,derived
+Kmin,1.0,MeV,default
+Kmax,33.870599492219014,MeV,derived
+SigmaThetaS0,20.0,deg,default
+SlopeThetaS,15.0,deg,default
+rpmax,0.005,,beam-line file
