@@ -86,3 +86,5 @@ bash 02-Tests/runAllTests.bash DriftTst FocusQuadTst   # 只跑指定的测试
 - 新发现的代码问题见上面“已发现但暂未修改的小问题”。
 - 数据文件 `99-Scratch/LhARA-LsrDrvn-Gabor.dat`（84 MB）没有提交，用报告第 8 节的命令可以完全重新生成。
 
+### 2026-10-28
+- 把这次仓库可读性检查整理成交接文档 `HANDOFF.md`：检查范围、按严重程度列出的问题（带文件和行号）、已做的修改、未完成事项。
